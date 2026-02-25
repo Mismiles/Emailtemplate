@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BC Email Draft Generator</title>
+
+    <style>
+        :root {
+            --nhs-blue: #005EB8;
+            --nhs-light-blue: #0072CE;
+            --nhs-border: #D8DDE0;
+            --nhs-bg: #F0F4F5;
+            --font-main: Arial, sans-serif;
+            --font-mono: "Courier New", monospace;
+        }
+
+        body {
+            font-family: var(--font-main);
+            margin: 0;
+            background: var(--nhs-bg);
+        }
+
+        header {
+            background: var(--nhs-blue);
+            color: white;
+            padding: 20px 40px;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            padding: 40px;
+            gap: 40px;
+        }
+
+        .form-section, .email-section {
+            background: white;
+            padding: 20px;
+            border: 1px solid var(--nhs-border);
+            border-radius: 4px;
+        }
+
+        .form-section {
+            width: 45%;
+        }
+
+        .email-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        input, select {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid var(--nhs-border);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        #emailOutput {
+            border: 1px solid var(--nhs-border);
+            background: #f7f7f7;
+            padding: 15px;
+            white-space: pre;
+            font-family: var(--font-mono);
+            min-height: 300px;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 10px 18px;
+            background: var(--nhs-light-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #005FA3;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>BC Email Draft Generator</header>
+
+<div class="container">
+
+    <!-- LEFT SIDE FORM -->
+    <div class="form-section">
+        <form id="emailForm">
+
+            <div class="form-row">
+                <label>Medication:</label>
+                <input type="text" id="medication" oninput="updateEmail()">
+            </div>
+
+            <div class="form-row">
+                <label>Diagnosis:</label>
+                <input type="text" id="diagnosis" oninput="updateEmail()">
+            </div>
+
+            <div class="form-row">
+                <label>Off-label status:</label>
+                <select id="offLabel" onchange="updateEmail()">
+                    <option value="">-- Select --</option>
+                    <option>Off-label</option>
+                    <option>Not off-label</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label>Tech Level:</label>
+                <select id="techLevel" onchange="updateEmail()">
+                    <option value="">-- Select --</option>
+                    <option>Low tech</option>
+                    <option>Medium tech</option>
+                    <option>High tech</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label>NHS Standard Service Area:</label>
+                <select id="serviceArea" onchange="updateEmail()">
+                    <option value="">-- Select --</option>
+
+                    <!-- Inserted NHS Standard Service Area Options -->
+                    <option>Angioedema and other severe allergies (Respiratory)</option>
+                    <option>Anti-infectives - Viral Hepatitis</option>
+                    <option>Anti-infectives - Viral HIV Anti-retroviral Therapy (ARV)</option>
+                    <option>Anti-infectives - Infection Management -  HPAT/OHPAT</option>
+                    <option>Blood disorders - Erythropoietin Stimulating Agents (ESA)</option>
+                    <option>Blood disorders - iron overload</option>
+                    <option>Blood disorders - unclassified</option>
+                    <option>Cancer - Oncology and Haematology - Injectable</option>
+                    <option>Cancer - Oncology and Haematology - Oral</option>
+                    <option>Cardiovascular - Pulmonary Hypertension (PH)(PAH)</option>
+                    <option>Cardiovascular - unclassified</option>
+                    <option>Clinical Trials - unclassified</option>
+                    <option>Endocrine - Fertility</option>
+                    <option>Endocrine - Growth Hormone (adults)</option>
+                    <option>Endocrine - Growth Hormone (paediatrics)</option>
+                    <option>Endocrine - Osteoporosis and bone metabolism</option>
+                    <option>Endocrine - Somatostatin analogues</option>
+                    <option>Endocrine - unclassified</option>
+                    <option>Hepatology - unclassified</option>
+                    <option>Immune system - Dermatology (skin)</option>
+                    <option>Immune system - Immunosuppression - Transplant</option>
+                    <option>Immune system - Inflammatory bowel and related disorders</option>
+                    <option>Immune system - Intravenous and Sub-cutaneous Immunoglobulin</option>
+                    <option>Immune system - Multiple Sclerosis</option>
+                    <option>Immune system - unclassified</option>
+                    <option>Musculoskeletal - Rheumatic disease</option>
+                    <option>Musculoskeletal - unclassified</option>
+                    <option>Nervous system - unclassified</option>
+                    <option>Nutrition - enteral, special diets and supplements</option>
+                    <option>Nutrition - Enzyme Replacement Therapy (ERT)</option>
+                    <option>Nutrition - Home Parenteral Nutrition (HPN)</option>
+                    <option>Nutrition - metabolic disorders unclassified including Acute porphyrias</option>
+                    <option>Orphan diseases and unlicensed uses - unclassified</option>
+                    <option>Parkinson's Disease (PD) and related disorders</option>
+                    <option>Psychoses and related disorders</option>
+                    <option>Renal and Genito-urinary (GU) -  unclassified</option>
+                    <option>Respiratory - Cystic Fibrosis (CF) adults</option>
+                    <option>Respiratory - Cystic Fibrosis (CF) paeds</option>
+                    <option>Respiratory - Idiopathic Pulmonary Fibrosis (IPF)</option>
+                    <option>Respiratory - unclassified</option>
+                    <option>Skin - unclassified</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label>Hospital account number CT:</label>
+                <input type="text" id="hospitalAccount" oninput="updateEmail()">
+            </div>
+
+            <div class="form-row">
+                <label>Patient account number CT:</label>
+                <input type="text" id="patientAccount" oninput="updateEmail()">
+            </div>
+
+        </form>
+
+        <!-- Reset button -->
+        <button onclick="resetForm()">Reset Form</button>
+    </div>
+
+    <!-- RIGHT SIDE OUTPUT -->
+    <div class="email-section">
+        <h3>Generated Email Draft:</h3>
+
+        <div id="emailOutput">
+            Your email draft will appear here...
+        </div>
+
+        <div class="button-row">
+            <button onclick="copyEmail()">Copy to Clipboard</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function updateEmail() {
+    const fields = {
+        "Medication": document.getElementById("medication").value,
+        "Diagnosis": document.getElementById("diagnosis").value,
+        "Whether it is off-label or not": document.getElementById("offLabel").value,
+        "Low/Medium/High Tech": document.getElementById("techLevel").value,
+        "The NHS Standard Service area": document.getElementById("serviceArea").value,
+        "Hospital account number CT": document.getElementById("hospitalAccount").value,
+        "Patient account number CT": document.getElementById("patientAccount").value
+    };
+
+    // Determine longest label for alignment
+    const longest = Math.max(...Object.keys(fields).map(k => k.length));
+
+    let email =
+`Dear team,
+
+Can you kindly add the following to BC;\n`;
+
+    for (const [label, value] of Object.entries(fields)) {
+        email += `• ${label.padEnd(longest)}: ${value}\n`;
+    }
+
+    document.getElementById("emailOutput").textContent = email;
+}
+
+function copyEmail() {
+    const text = document.getElementById("emailOutput").textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Email copied to clipboard!");
+    });
+}
+
+function resetForm() {
+    document.getElementById("emailForm").reset();
+    document.getElementById("emailOutput").textContent = "Your email draft will appear here...";
+}
+</script>
+
+</body>
+</html>
